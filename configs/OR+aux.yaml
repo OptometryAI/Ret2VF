@@ -1,0 +1,68 @@
+experiment_name: oct2vf_ordinal_multitask_recipe1
+
+seed: 2025
+reproducibility:
+  deterministic: true
+  warn_only: true
+
+device: cuda
+
+save:
+  save_root: save_result
+  task_name: ordinal_multitask
+
+data:
+  data_root: data_table_with_processed_OCT.xlsx
+  dataset_ratio: [0.8, 0.1, 0.1]
+  transform: default
+  batch_size: 4
+  num_workers: 0
+  pin_memory: false
+  n_categories_per_point: 50
+
+model:
+  n_input_channels: 1
+  model_type: resnet
+  model_depth: 18
+  n_classes: 54
+  n_categories_per_class: 50
+
+task:
+  task_type: c  # c: ordinal regression, r: direct regression
+  predict_classes: true
+  use_weight: false
+
+loss:
+  main_loss: ordinal_bce
+  main_reduction: mean
+  pm_focal_alpha: 0.7
+  pm_focal_gamma: 2.0
+  pm_loss_weight: 1000.0
+  md_loss_weight: 1.0
+
+optimizer:
+  name: adam
+  lr: 1.0e-4
+  weight_decay: 0.0
+
+metrics:
+  ordinal_threshold: 0.5
+
+scheduler:
+  name: reduce_on_plateau
+  mode: min
+  factor: 0.5
+  patience: 2
+  step_on: val_main_loss
+
+logging:
+  use_tensorboard: true
+
+train:
+  epochs: 150
+  use_test: true
+  checkpoint: 5
+  max_grad_norm: null
+
+selection:
+  monitor: rmse
