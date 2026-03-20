@@ -1,4 +1,4 @@
-# OCT2VF: Multi-Task Visual Field Prediction from 3D OCT Volumes
+# ret2vf: A Multi-Task Ordinal Regression Framework for Visual Field Prediction from 3D OCT Volumes
 
 ## Overview
 This repository provides a training pipeline for predicting 54-point visual field (VF) values from 3D optical coherence tomography (OCT) volumes. The framework supports a primary VF prediction objective and two auxiliary tasks for multi-task learning.
